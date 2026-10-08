@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lunch List</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="top">
+    <h1>Lunch List</h1>
+    <div class="who"><span id="user"></span> <a href="/.auth/logout" id="logout" hidden>Sign out</a></div>
+  </header>
+
+  <main>
+    <section class="summary">
+      <div class="progress-label"><strong id="visited-count">0</strong> of <span id="total-count">0</span> places visited</div>
+      <div class="progress"><div class="progress-bar" id="progress-bar"></div></div>
+    </section>
+
+    <section class="toolbar">
+      <input id="search" type="search" placeholder="Search name, address, notes…" aria-label="Search">
+      <div class="segmented" role="group" aria-label="Filter">
+        <button data-filter="all" class="active">All</button>
+        <button data-filter="todo">Not yet</button>
+        <button data-filter="visited">Visited</button>
+      </div>
+      <button id="random" class="secondary" title="Pick a random place we haven't tried">Surprise me</button>
+      <button id="load-menus" class="secondary">Today's menus</button>
+      <button id="add" class="primary">+ Add place</button>
+    </section>
+
+    <p id="status" class="status" role="status"></p>
+    <ul id="list" class="list"></ul>
+    <p id="empty" class="empty" hidden>No places yet. Add the first one!</p>
+  </main>
+
+  <!-- Add / edit place -->
+  <dialog id="place-dialog">
+    <form id="place-form" method="dialog">
+      <h2 id="place-dialog-title">Add place</h2>
+      <label>Name *<input name="name" required maxlength="100"></label>
+      <label>Address<input name="address" maxlength="200" placeholder="Street 1, Helsinki"></label>
+      <label>Website<input name="url" type="url" maxlength="500" placeholder="https://…"></label>
+      <fieldset>
+        <legend>Lunch menu (optional)</legend>
+        <label>Menu page URL<input name="menuUrl" type="url" maxlength="500" placeholder="https://…/lounas"></label>
+        <label>CSS selector<input name="menuSelector" maxlength="200" placeholder="e.g. .lunch-menu or #lounas"></label>
+        <label class="check"><input name="menuSliceByDay" type="checkbox" checked> Show only today's section when the page lists the whole week</label>
+        <p class="hint">Leave the selector empty to use the whole page. Tip: right-click the menu in your browser → Inspect, and copy the class or id of the element that wraps it.</p>
+      </fieldset>
+      <label>Notes<textarea name="notes" maxlength="1000" rows="2" placeholder="Card only, closed Fridays, great soup…"></textarea></label>
+      <p class="form-error" id="place-error"></p>
+      <div class="actions">
+        <button type="button" class="secondary" data-close>Cancel</button>
+        <button type="submit" class="primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Log a visit -->
+  <dialog id="visit-dialog">
+    <form id="visit-form" method="dialog">
+      <h2>Mark <span id="visit-name"></span> as visited</h2>
+      <fieldset class="stars" id="stars">
+        <legend>Rating (optional)</legend>
+      </fieldset>
+      <label>Comment<input name="comment" maxlength="500" placeholder="Good portions, slow queue…"></label>
+      <div class="actions">
+        <button type="button" class="secondary" data-close>Cancel</button>
+        <button type="submit" class="primary">Save visit</button>
+      </div>
+    </form>
+  </dialog>
+
+  <template id="card">
+    <li class="card">
+      <div class="card-main">
+        <div class="card-head">
+          <h3 class="name"></h3>
+          <span class="badge"></span>
+        </div>
+        <p class="address"></p>
+        <p class="meta"></p>
+        <p class="notes"></p>
+        <div class="menu" hidden>
+          <div class="menu-head"><strong>Today's menu</strong> <button class="link refresh">Refresh</button></div>
+          <pre class="menu-text"></pre>
+          <p class="menu-note"></p>
+        </div>
+      </div>
+      <div class="card-actions">
+        <button class="primary visit">We went</button>
+        <button class="secondary menu-toggle">Menu</button>
+        <button class="link edit">Edit</button>
+        <button class="link unvisit">Unmark</button>
+        <button class="link danger delete">Delete</button>
+      </div>
+    </li>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>

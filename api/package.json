@@ -1,0 +1,19 @@
+{
+  "name": "lunch-list-api",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/functions/*.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "func start",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@azure/data-tables": "^13.3.0",
+    "@azure/functions": "^4.6.0",
+    "cheerio": "^1.0.0"
+  }
+}
